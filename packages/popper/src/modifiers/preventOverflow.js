@@ -56,7 +56,9 @@ export default function preventOverflow(data, options) {
         popper[placement] < boundaries[placement] &&
         !options.escapeWithReference
       ) {
-        value = Math.max(popper[placement], boundaries[placement]);
+        value = placement === 'top'
+          ? popper[placement]
+          : Math.max(popper[placement], boundaries[placement]);
       }
       return { [placement]: value };
     },
@@ -67,10 +69,12 @@ export default function preventOverflow(data, options) {
         popper[placement] > boundaries[placement] &&
         !options.escapeWithReference
       ) {
-        value = Math.min(
-          popper[mainSide],
-          boundaries[placement] -
-            (placement === 'right' ? popper.width : popper.height)
+        value = mainSide === 'top'
+          ? popper[mainSide]
+          : Math.min(
+            popper[mainSide],
+            boundaries[placement] -
+              (placement === 'right' ? popper.width : popper.height)
         );
       }
       return { [mainSide]: value };
